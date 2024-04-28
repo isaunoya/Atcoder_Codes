@@ -35,14 +35,45 @@ const ll LNF = 1000000000000000000;
 #endif
 
 void solve() {
-  
+  int N;
+  cin >> N;
+  vc<pii> A(N);
+  for (auto &[x, y] : A)
+    cin >> x >> y;
+
+  auto solve = [&](const vc<pii> &a) {
+    vi px, py;
+    for (auto [x, y] : a) {
+      px.pb(x + y);
+      py.pb(x - y);
+    }
+
+    ll ans = 0;
+    sort(all(px));
+    sort(all(py));
+    ll S1 = 0;
+    ll S2 = 0;
+    for (int i = 0; i < sz(px); i++) {
+      ans += 1ll * px[i] * i - S1;
+      ans += 1ll * py[i] * i - S2;
+      S1 += px[i];
+      S2 += py[i];
+    }
+    return ans / 2;
+  };
+
+  vc<pii> pot[2];
+  for (auto [x, y] : A) {
+    pot[(x + y) % 2].pb(x, y);
+  }
+
+  cout << solve(pot[0]) + solve(pot[1]) << "\n";
 }
 
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
   int t = 1;
-  cin >> t;
   while (t--) {
     solve();
   }

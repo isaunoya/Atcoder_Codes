@@ -34,13 +34,26 @@ const ll LNF = 1000000000000000000;
 #define se second
 #endif
 
-void solve() {}
+void solve() {
+  int SA = 0;
+  int SB = 0;
+  rep(9) {
+    int x;
+    cin >> x;
+    SA += x;
+  }
+  rep(8) {
+    int x;
+    cin >> x;
+    SB += x;
+  }
+  cout << SA - SB + 1 << "\n";
+}
 
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
   int t = 1;
-  cin >> t;
   while (t--) {
     solve();
   }

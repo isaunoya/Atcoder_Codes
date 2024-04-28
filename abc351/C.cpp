@@ -35,14 +35,32 @@ const ll LNF = 1000000000000000000;
 #endif
 
 void solve() {
-  
+  int N;
+  cin >> N;
+  vi v;
+  rep(i, N) {
+    int x;
+    cin >> x;
+    if (v.empty()) {
+      v.emplace_back(x);
+    } else {
+      v.emplace_back(x); 
+      while (sz(v) >= 2 && v[sz(v) - 1] == v[sz(v) - 2]) {
+        int cur = v[sz(v) - 1];
+        v.pop_back();
+        v.pop_back();
+        v.pb(cur + 1);
+      }
+    }
+  }
+  int ans = sz(v);
+  cout << ans << "\n";
 }
 
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
   int t = 1;
-  cin >> t;
   while (t--) {
     solve();
   }

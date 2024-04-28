@@ -35,14 +35,31 @@ const ll LNF = 1000000000000000000;
 #endif
 
 void solve() {
-  
+  int N;
+  cin >> N;
+  vc<string> A(N), B(N);
+  rep(i, N) {
+    cin >> A[i];
+  }
+  rep(i, N) {
+    cin >> B[i];
+  }
+  rep(i, N) {
+    if (A[i] != B[i]) {
+      rep(j, N) {
+        if (A[i][j] != B[i][j]) {
+          cout << i + 1 << " " << j + 1 << "\n";
+          return;
+        }
+      }
+    }
+  }
 }
 
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
   int t = 1;
-  cin >> t;
   while (t--) {
     solve();
   }

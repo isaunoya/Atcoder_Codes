@@ -35,14 +35,77 @@ const ll LNF = 1000000000000000000;
 #endif
 
 void solve() {
-  
+  int N, M;
+  cin >> N >> M;
+  vc<string> grid(N);
+  rep(i, N) { cin >> grid[i]; }
+
+  vc<vi> used(N, vi(M));
+
+  vc<vi> vis(N, vi(M));
+  auto bfs = [&](int s, int t) {
+    vc<pii> q{{s, t}};
+    rep(q.size()) {
+      auto [x, y] = q[i];
+      bool ok = true;
+      if (vis[x][y])
+        continue;
+      vis[x][y] = 1;
+      for (int dx = -1; dx <= 1; dx++) {
+        for (int dy = -1; dy <= 1; dy++) {
+          if (dx * dx + dy * dy == 1) {
+            int nx = x + dx;
+            int ny = y + dy;
+            if (0 <= nx && nx < N && 0 <= ny && ny < M) {
+              if (grid[nx][ny] == '#') {
+                ok = false;
+              }
+            }
+          }
+        }
+      }
+      if (!ok)
+        continue;
+      for (int dx = -1; dx <= 1; dx++) {
+        for (int dy = -1; dy <= 1; dy++) {
+          if (dx * dx + dy * dy == 1) {
+            int nx = x + dx;
+            int ny = y + dy;
+            if (0 <= nx && nx < N && 0 <= ny && ny < M) {
+              if (grid[nx][ny] == '.') {
+                if (!vis[nx][ny])
+                  q.pb(nx, ny);
+              }
+            }
+          }
+        }
+      }
+    }
+    int cnt = sz(q);
+    for (auto [x, y] : q) {
+      vis[x][y] = 0;
+      used[x][y] = 1;
+    }
+    return cnt;
+  };
+
+  int ans = 0;
+  rep(i, N) {
+    rep(j, M) {
+      if (grid[i][j] == '#' || used[i][j]) {
+        continue;
+      }
+      int cur = bfs(i, j);
+      ans = max(ans, cur);
+    }
+  }
+  cout << ans << "\n";
 }
 
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
   int t = 1;
-  cin >> t;
   while (t--) {
     solve();
   }
