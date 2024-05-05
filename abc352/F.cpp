@@ -35,14 +35,82 @@ const ll LNF = 1000000000000000000;
 #endif
 
 void solve() {
-  
+  int N, M;
+  cin >> N >> M;
+  vc<vi> G(N, vi(N));
+  rep(i, M) {
+    int a, b, c;
+    cin >> a >> b >> c, --a, --b;
+    G[a][b] = c;
+    G[b][a] = -c;
+  }
+  rep(b, N) rep(a, N) rep(c, N) if (G[a][b] && G[b][c]) {
+    G[a][c] = G[a][b] + G[b][c];
+  }
+
+  vi beg(N, 1);
+
+  rep(i, N) {
+    if (!beg[i])
+      continue;
+    rep(j, N) if (G[i][j]) { beg[j] = 0; }
+  }
+
+  vi mn(N), mx(N), msk(N);
+
+  rep(x, N) {
+    rep(i, N) if (G[i][x] || i == x) cmin(mn[x], G[i][x]), cmax(mx[x], G[i][x]);
+    rep(i, N) if (G[i][x] || i == x) msk[x] |= 1 << (G[i][x] - mn[x]);
+  }
+
+  // debug(mn, mx, msk);
+
+  rep(x, N) {
+    vi vis(N);
+    rep(i, N) if (G[i][x] || i == x) vis[i] = 1;
+    vi f(1 << N, -1);
+    f.back() = 0;
+    int ans = -1;
+    int cnt = 0;
+
+    for (int s = (1 << N) - 1; s > 0; s--) {
+      if (f[s] == -1) {
+        continue;
+      }
+      int i = f[s];
+      while (i < N && (vis[i] || !beg[i])) {
+        i += 1;
+      }
+
+      if (i == N) {
+        i = x;
+      }
+
+      for (int j = 0; j + mx[i] - mn[i] < N; j++) {
+        int m = msk[i] << j;
+        if ((s & m) == m) {
+          f[s ^ m] = i + 1;
+
+          if (i == x) {
+            ans = j - mn[x] + 1;
+            cnt++;
+          }
+        }
+      }
+    }
+
+    if (cnt > 1) {
+      ans = -1;
+    }
+
+    cout << ans << " \n"[x + 1 == N];
+  }
 }
 
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
   int t = 1;
-  cin >> t;
   while (t--) {
     solve();
   }
