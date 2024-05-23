@@ -33,7 +33,6 @@ const ll LNF = 1000000000000000000;
 #define fi first
 #define se second
 #endif
-
 void solve() {
   int N, M;
   cin >> N >> M;

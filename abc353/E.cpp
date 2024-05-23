@@ -1,4 +1,3 @@
-#include <iostream>
 #if defined(LOCAL)
 #include <D:/cp/templates/my_template_compiled.hpp>
 #else
@@ -35,14 +34,47 @@ const ll LNF = 1000000000000000000;
 #define se second
 #endif
 
+// #include <atcoder/string>
 void solve() {
-  
+  int N;
+  cin >> N;
+  vector<string> S(N);
+  for (auto &s : S) {
+    cin >> s;
+  }
+
+  sort(all(S));
+  vector<pair<int, int>> st;
+  st.emplace_back(sz(S[0]), 1);
+  long long sum = sz(S[0]);
+  long long ans = 0;
+  for (int i = 1; i < N; i++) {
+    int lcp = 0;
+    while (lcp < sz(S[i - 1]) && lcp < sz(S[i]) && S[i - 1][lcp] == S[i][lcp]) {
+      lcp += 1;
+    }
+    int cnt = 0;
+    while (!st.empty() && st.back().first >= lcp) {
+      cnt += st.back().second;
+      sum -= 1ll * st.back().fi * st.back().se;
+      st.pop_back();
+    }
+    if (cnt > 0) {
+      sum += 1ll * lcp * cnt;
+      st.emplace_back(lcp, cnt);
+    }
+    ans += sum;
+    sum += 1ll * sz(S[i]);
+    st.emplace_back(sz(S[i]), 1);
+  }
+  cout << ans << "\n";
 }
 
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
   int t = 1;
+  // cin >> t;
   while (t--) {
     solve();
   }
