@@ -1,0 +1,23 @@
+[
+	{
+		"correct_answers":
+		[
+			"Yes"
+		],
+		"test": "AtCoder Land\n"
+	},
+	{
+		"correct_answers":
+		[
+			"No"
+		],
+		"test": "CodeQUEEN Land\n"
+	},
+	{
+		"correct_answers":
+		[
+			"No"
+		],
+		"test": "aTcodeR lANd\n"
+	}
+]

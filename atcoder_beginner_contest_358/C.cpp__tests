@@ -1,0 +1,23 @@
+[
+	{
+		"correct_answers":
+		[
+			"2"
+		],
+		"test": "3 5\noooxx\nxooox\nxxooo\n"
+	},
+	{
+		"correct_answers":
+		[
+			"1"
+		],
+		"test": "3 2\noo\nox\nxo\n"
+	},
+	{
+		"correct_answers":
+		[
+			"3"
+		],
+		"test": "8 6\nxxoxxo\nxxoxxx\nxoxxxx\nxxxoxx\nxxoooo\nxxxxox\nxoxxox\noxoxxo\n"
+	}
+]
