@@ -34,53 +34,71 @@ const ll LNF = 1000000000000000000;
 #define se second
 #endif
 
-#include <atcoder/convolution>
-
-using namespace atcoder;
-using mint = modint998244353;
 void solve() {
-  int K;
-  cin >> K;
-  vc<mint> fact(K + 1);
-  vc<mint> inv(K + 1);
-  fact[0] = 1;
-  inv[0] = 1;
-  for (int i = 1; i <= K; i++) {
-    fact[i] = fact[i - 1] * i;
-    inv[i] = 1 / fact[i];
+  int N, M;
+  cin >> N >> M;
+
+  vector<vector<pair<int, int>>> G(N);
+  for (int i = 0; i < M; i++) {
+    int a, b, c;
+    cin >> a >> b >> c;
+    --a;
+    --b;
+    G[a].pb(b, -c);
+    G[b].pb(a, c);
   }
-  vi C(26);
-  for (int i = 0; i < 26; i++) {
-    int x;
-    cin >> x;
-    C[i] = int(x);
+
+  vector<int> vis(N, -1), d(N);
+
+  vector<int> K;
+  for (int i = 0; i < N; i++) {
+    d[i] = 0;
+    vis[i] = i;
+    vector<int> q{i};
+    for (int j = 0; j < (int)q.size(); j++) {
+      int u = d[j];
+      for (auto [v, c] : G[u]) {
+        if (vis[v] == -1) {
+          vis[v] = i;
+          d[v] = d[u] + c;
+          q.push_back(v);
+        }
+      }
+    }
+
+    int mn = 0;
+    for (int j : q) {
+      mn = min(mn, d[j]);
+    }
+
+    int msk = 0;
+    for (int j : q) {
+      msk |= 1 << (d[j] - mn);
+    }
+
+    K.push_back(msk);
   }
-  vc<vc<mint>> f(26);
-  for (int i = 0; i < 26; i++) {
-    int L = min(C[i], K);
-    f[i].resize(L + 1);
-    for (int j = 0; j <= L; j++) {
-      f[i][j] = inv[j];
+
+  vector<int> dp(1 << N);
+
+  for (int i = 0; i < (int)K.size(); i++) {
+    for (int j = 0; j < 1 << N; j++) {
+      dp[j] = 0;
+    }
+    dp[0] = 1;
+    for (int j = 0; j < (int)K.size(); j++) {
+      if (i != j) {
+        
+      }
     }
   }
-
-  vc<mint> ans(K + 1);
-  ans[0] = 1;
-  for (int i = 0; i < 26; i++) {
-    ans = convolution(ans, f[i]);
-  }
-  mint ANS = 0;
-  for (int i = 1; i <= K; i++) {
-    ANS += ans[i] * fact[i];
-  }
-  cout << ANS.val() << "\n";
 }
 
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
   int t = 1;
-  // cin >> t;
+  cin >> t;
   while (t--) {
     solve();
   }

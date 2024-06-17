@@ -34,46 +34,35 @@ const ll LNF = 1000000000000000000;
 #define se second
 #endif
 
-#include <atcoder/convolution>
+#include <atcoder/segtree>
+using S = ll;
+S op(S a, S b) { return max(a, b); }
+S e() { return -LNF; }
 
-using namespace atcoder;
-using mint = modint998244353;
 void solve() {
-  int K;
-  cin >> K;
-  vc<mint> fact(K + 1);
-  vc<mint> inv(K + 1);
-  fact[0] = 1;
-  inv[0] = 1;
-  for (int i = 1; i <= K; i++) {
-    fact[i] = fact[i - 1] * i;
-    inv[i] = 1 / fact[i];
+  ll N, C;
+  cin >> N >> C;
+  atcoder::segtree<S, op, e> st1(N), st2(N);
+  st1.set(0, 0);
+  st2.set(0, 0);
+  int M;
+  cin >> M;
+  // dp[t] = max(dp[x]-(t-x)*C+P), t>=x
+  // dp[t] = max(dp[x]-(x-t)*C+P), t<=x
+  ll ANS = 0;
+  while (M--) {
+    ll T, P;
+    cin >> T >> P;
+    --T;
+    ll ans = -LNF;
+    cmax(ans, st1.prod(0, T) - T * C + P);
+    cmax(ans, st2.prod(T, N) + T * C + P);
+    // debug(ans);
+    cmax(ANS, ans);
+    st1.set(T, ans + T * C);
+    st2.set(T, ans - T * C);
   }
-  vi C(26);
-  for (int i = 0; i < 26; i++) {
-    int x;
-    cin >> x;
-    C[i] = int(x);
-  }
-  vc<vc<mint>> f(26);
-  for (int i = 0; i < 26; i++) {
-    int L = min(C[i], K);
-    f[i].resize(L + 1);
-    for (int j = 0; j <= L; j++) {
-      f[i][j] = inv[j];
-    }
-  }
-
-  vc<mint> ans(K + 1);
-  ans[0] = 1;
-  for (int i = 0; i < 26; i++) {
-    ans = convolution(ans, f[i]);
-  }
-  mint ANS = 0;
-  for (int i = 1; i <= K; i++) {
-    ANS += ans[i] * fact[i];
-  }
-  cout << ANS.val() << "\n";
+  cout << ANS << "\n";
 }
 
 int main() {

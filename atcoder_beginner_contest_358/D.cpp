@@ -34,10 +34,6 @@ const ll LNF = 1000000000000000000;
 #define se second
 #endif
 
-using S = int;
-S op(S a, S b) { return a + b; }
-S e() { return 0; }
-
 void solve() {
   int N, M;
   cin >> N >> M;

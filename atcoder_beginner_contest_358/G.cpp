@@ -35,14 +35,46 @@ const ll LNF = 1000000000000000000;
 #endif
 
 void solve() {
-  
+  ll h, w, k;
+  cin >> h >> w >> k;
+  ll si, sj;
+  cin >> si >> sj;
+  --si, --sj;
+
+  vc<vl> A(h, vl(w));
+  rep(i, h) rep(j, w) cin >> A[i][j];
+
+  int tot = min(h * w, k);
+  ll dp[tot + 1][h][w];
+  memset(dp, 0xcf, sizeof dp);
+  dp[0][si][sj] = 0;
+
+  rep(t, tot) {
+    rep(i, h) {
+      rep(j, w) {
+        rep(dx, -1, 2) rep(dy, -1, 2) {
+          if (abs(dx) + abs(dy) <= 1) {
+            int a = i + dx;
+            int b = j + dy;
+            if (0 <= a && a < h && 0 <= b && b < w) {
+              cmax(dp[t + 1][a][b], dp[t][i][j] + A[a][b]);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  ll ans = 0;
+  rep(i, h) rep(j, w) { cmax(ans, dp[tot][i][j] + (k - tot) * A[i][j]); }
+
+  cout << ans << "\n";
 }
 
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
   int t = 1;
-  cin >> t;
   while (t--) {
     solve();
   }
