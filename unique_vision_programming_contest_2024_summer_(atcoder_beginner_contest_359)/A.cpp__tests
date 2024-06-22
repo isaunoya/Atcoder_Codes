@@ -1,0 +1,23 @@
+[
+	{
+		"correct_answers":
+		[
+			"2"
+		],
+		"test": "3\nAoki\nTakahashi\nTakahashi\n"
+	},
+	{
+		"correct_answers":
+		[
+			"0"
+		],
+		"test": "2\nAoki\nAoki\n"
+	},
+	{
+		"correct_answers":
+		[
+			"7"
+		],
+		"test": "20\nAoki\nTakahashi\nTakahashi\nAoki\nAoki\nAoki\nAoki\nTakahashi\nAoki\nAoki\nAoki\nTakahashi\nTakahashi\nAoki\nTakahashi\nAoki\nAoki\nAoki\nAoki\nTakahashi\n"
+	}
+]
