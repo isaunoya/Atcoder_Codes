@@ -35,49 +35,40 @@ const ll LNF = 1000000000000000000;
 #endif
 
 #include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-mint dp[1005][1 << 10];
-int vis[1 << 10];
+using mint = atcoder::modint1000000007;
+
+const int N = 100;
+const int M = 10;
+const int shift = N * M;
+
+int n, A[N], lst[21];
+mint dp[N + 1][shift * 2 + 1], f[shift * 2 + 1];
 
 void solve() {
-  int N, K;
-  cin >> N >> K;
-  rep(s, 1 << K) {
-    vi c;
-    rep(i, K) c.pb(s >> i & 1);
-    vi d = c;
-    reverse(all(d));
-    if (c == d)
-      vis[s] = 1;
-  }
-  // rep(i,1<<K)debug(i,vis[i]);
-  int MX = (1 << K) - 1;
-  dp[0][0] = 1;
-  string S;
-  cin >> S;
-  rep(N) {
-    // rep(j,1<<K)if(dp[i][j].val())debug(i,j,dp[i][j].val());
-    if (S[i] == 'A' || S[i] == '?') {
-      rep(j, 1 << K) {
-        int nj = (j << 1) & MX;
-        dp[i + 1][nj] += dp[i][j];
+  cin >> n;
+  rep(n) cin >> A[i];
+  memset(lst, -1, sizeof lst);
+
+  mint ANS = 1;
+  rep(i, n) {
+    rep(k, shift * 2 + 1) if (k != shift) {
+      dp[i][k] = f[k];
+      ANS += dp[i][k];
+    }
+    rep(j, lst[A[i] + 11], i) {
+      if (j >= 0) {
+        f[A[i] + shift] += dp[j][-A[j] + shift];
+      } else {
+        f[A[i] + shift] += 1;
       }
     }
-    if (S[i] == 'B' || S[i] == '?') {
-      rep(j, 1 << K) {
-        int nj = (j << 1 | 1) & MX;
-        dp[i + 1][nj] += dp[i][j];
-      }
+    lst[A[i] + 11] = i;
+    rep(k, shift * 2 + 1) if (k != shift && 0 <= -A[i] + k &&
+                              -A[i] + k <= shift * 2) {
+      f[k] += dp[i][-A[i] + k];
     }
-    if (i + 1 >= K)
-      rep(j, 1 << K) {
-        if (vis[j])
-          dp[i + 1][j] = 0;
-      }
   }
-  mint ANS = 0;
-  rep(j, 1 << K) ANS += dp[N][j];
+
   cout << ANS.val() << "\n";
 }
 

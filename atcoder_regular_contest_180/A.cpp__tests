@@ -1,0 +1,30 @@
+[
+	{
+		"correct_answers":
+		[
+			"2"
+		],
+		"test": "4\nABAB\n"
+	},
+	{
+		"correct_answers":
+		[
+			"1"
+		],
+		"test": "1\nA\n"
+	},
+	{
+		"correct_answers":
+		[
+			"18"
+		],
+		"test": "17\nBBABABAABABAAAABA\n"
+	},
+	{
+		"correct_answers":
+		[
+			"415919090"
+		],
+		"test": "100\nABAABAABABBABAABAABAABABBABBABBABBABBABBABBABBABBABBABBABBABBABBABAABABAABABBABBABABBABAABAABAABAABA\n"
+	}
+]

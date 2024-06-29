@@ -1,4 +1,3 @@
-#include <iterator>
 #if defined(LOCAL)
 #include <D:/cp/templates/my_template_compiled.hpp>
 #else
@@ -140,7 +139,7 @@ void solve() {
       dfs(dfs, 0, -1);
     }
   };
-
+  
   rep(i, N) { get(group[i], i); }
 
   cout << ans << "\n";

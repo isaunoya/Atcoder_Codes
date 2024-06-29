@@ -35,50 +35,35 @@ const ll LNF = 1000000000000000000;
 #endif
 
 #include <atcoder/modint>
-using namespace atcoder;
-using mint = modint998244353;
-mint dp[1005][1 << 10];
-int vis[1 << 10];
-
+using mint = atcoder::modint1000000007;
 void solve() {
-  int N, K;
-  cin >> N >> K;
-  rep(s, 1 << K) {
-    vi c;
-    rep(i, K) c.pb(s >> i & 1);
-    vi d = c;
-    reverse(all(d));
-    if (c == d)
-      vis[s] = 1;
-  }
-  // rep(i,1<<K)debug(i,vis[i]);
-  int MX = (1 << K) - 1;
-  dp[0][0] = 1;
-  string S;
-  cin >> S;
-  rep(N) {
-    // rep(j,1<<K)if(dp[i][j].val())debug(i,j,dp[i][j].val());
-    if (S[i] == 'A' || S[i] == '?') {
-      rep(j, 1 << K) {
-        int nj = (j << 1) & MX;
-        dp[i + 1][nj] += dp[i][j];
-      }
+  int N; string S;
+  cin >> N >> S;
+  vi A(N);
+  rep(i, N) A[i] = S[i] - 'A';
+  rep(i, N) if (i % 2 == 1) A[i] ^= 1;
+
+  mint ans = 1;
+
+  for (int i = 0, j = 0; i < N; i = j) {
+    while (j < N && A[i] == A[j]) {
+      j += 1;
     }
-    if (S[i] == 'B' || S[i] == '?') {
-      rep(j, 1 << K) {
-        int nj = (j << 1 | 1) & MX;
-        dp[i + 1][nj] += dp[i][j];
-      }
-    }
-    if (i + 1 >= K)
-      rep(j, 1 << K) {
-        if (vis[j])
-          dp[i + 1][j] = 0;
-      }
+    int len = j - i;
+    // if (len == 1) {
+    //   continue;
+    // } else if (len == 2) {
+    //   continue;
+    // } else if (len == 3) {
+    //   ans *= 2;
+    // } else if (len == 4) {
+    //   ans *= 2;
+    // }
+
+    ans *= (len + 1) / 2;
   }
-  mint ANS = 0;
-  rep(j, 1 << K) ANS += dp[N][j];
-  cout << ANS.val() << "\n";
+
+  cout << ans.val() << "\n";
 }
 
 int main() {
